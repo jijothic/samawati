@@ -1,5 +1,6 @@
 package ke.co.buildbrand.samawati;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +16,8 @@ import com.digits.sdk.android.DigitsSession;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private DigitsAuthButton phoneButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,18 +27,14 @@ public class LoginActivity extends AppCompatActivity {
 
         DigitsAuthButton digitsButton = (DigitsAuthButton) findViewById(R.id.auth_button);
         digitsButton.setCallback(new AuthCallback() {
-            @Override
 
-//            public void success(DigitsSession digitsSession, String phoneNumber) {
-//                SessionRecorder.recordSessionActive("Login: digits account active", digitsSession);
-//                Answers.getInstance().logLogin(new LoginEvent().putMethod("Digits").putSuccess(true));
-//                startThemeChooser();
-//            }
+            @Override
             public void success(DigitsSession session, String phoneNumber) {
                 SessionRecorder.recordSessionActive("Login: digits account active", session);
                 Toast.makeText(getApplicationContext(), "Authentication successful for "
                         + phoneNumber, Toast.LENGTH_LONG).show();
                 Answers.getInstance().logLogin(new LoginEvent().putMethod("Digits").putSuccess(true));
+               startMainactivity();
 
             }
 
@@ -51,6 +50,19 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        twitterButton.onActivityResult(requestCode, resultCode, data);
+//    }
+
+    private void startMainactivity() {
+        final Intent themeChooserIntent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(themeChooserIntent);
     }
 
 }
+
+
